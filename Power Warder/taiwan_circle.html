@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>周圍比較</title>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?language=zh-TW&key=AIzaSyCrpS9yXnd6TAgCjJ3FcbuMlYafjkCrl1A"></script>
+    <script type="text/javascript">
+	var g = google.maps;
+	var map;
+	var c= new g.LatLng(25.017579, 121.531043);//地圖中心座標
+	var z = 13;//地圖縮放比例（數值越大，細節越清楚）
+	var n = 1;//圓圈數
+	var p = new Array();//圓心位置
+	p[1] = new g.LatLng(25.017579, 121.531043);//圓心座標。以下同類各項視需要增刪
+	//p[2] = new g.LatLng(25.20267, 121.662555);
+	//p[3] = new g.LatLng(21.958092, 120.751612);
+	var l = 3000;//半徑，單位為公尺
+	var bc = '#000000';//圓周顏色
+	var fc = '#46A3FF';//圓內顏色
+	var ic = 'http://google-maps-icons.googlecode.com/files/radiation.png';//標誌圖案；若刪除，則恢復預設標誌
+	var m = new Array();//標誌物件
+	var r = new Array();//圓圈物件
+	var t = new Array();//標誌說明文字
+	t[1] = "台電大樓";//標誌說明文字內容。以下同類各項視需要增刪
+	//t[2] = "台灣核二廠";
+	//t[3] = "台灣核三廠";
+	//t[4] = "台灣核四廠";
+	var wo = true;//是否顯示地圖說明視窗。true＝是；false＝否
+	var wc = true;//是否自動關閉地圖說明視窗。true＝是；false＝否
+	var wt = 5000;//自動關閉地圖說明視窗預設時間，計時單位為千分之一秒
+	var mt = '台電大樓周圍三公里區域';//地圖總說明
+	var w = new g.InfoWindow({
+		content: mt, position: c,
+        })
+	function addCircles() {
+    		for (i = 1; i <= n; i++) {
+			m[i] = new g.Marker({map: map,position: p[i],icon: ic,zIndex: 80 - i,title: t[i]});
+			r[i] = new g.Circle({map: map,radius: l,fillColor: fc,strokeWeight: 1,strokeColor: bc});
+			r[i].bindTo('center', m[i], 'position');
+		}	
+	}
+	function load() {
+  		var mapDiv = document.getElementById('map-canvas');
+  		map = new g.Map(mapDiv, {center: c,zoom: z,mapTypeId: g.MapTypeId.TERRAIN});
+		x =addCircles();
+		if(wo==true){
+			w.open(map);
+			if(wc==true){
+				var o =setTimeout("w.close()",wt);
+			}
+		}
+	}
+     </script>
+</head>
+<body style="border: 0 none; margin:0; padding:0; font-family: 新細明體" onload="load()">
+	<div id="map-canvas" style="width: 640px; height: 540px; margin: 0; padding:0;"></div>
+ </body>
+
+</html>​
